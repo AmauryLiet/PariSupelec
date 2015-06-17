@@ -1,0 +1,187 @@
+{# src/Lili/CoreBundle/Resources/views/layout.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Pari en ligne Supelec !{% endblock %}</title>
+	
+
+
+    {% block stylesheets %}
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        {# <link rel="stylesheet" href="/PariSupelec/bootstrap.min.css"> #}
+    {% endblock %}
+	
+	<link href="/PariSupelec/theme.css" rel="stylesheet">
+	
+	<script>window.jQuery || document.write('<script src="//localhost/PariSupelec/jquery.js"><\/script>')</script>
+		
+</head>
+
+
+
+
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">SupelecParis</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a class={% block espace_parier %}""{% endblock %} href="#">Paris en cours</a>
+                </li>
+                <li><a class={% block espace_perso %}""{% endblock %} href="#">Paris terminés</a>
+                </li>
+                <li><a class={% block espace_membres %}""{% endblock %} href="#">Espace perso</a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+{#
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+		<div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">SupelecPari</a>
+        </div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a class={% block espace_accueil %}""{% endblock %} href="#"><img src="http://www.parienligne.net/wp-content/imgs/ligue/small/x42.png.pagespeed.ic._jZ-9aDCcr.png"> Accueil</a>
+				</li>
+				<li class={% block espace_parier %}""{% endblock %}><a class="" href="#"><img src="http://www.cheminduhome.com/images/home-33.png" white_space="nowrap"> Parier</a>
+				</li>
+				<li><a class={% block espace_perso %}""{% endblock %} href="#">Espace perso</a>
+				</li>
+				<li><a class={% block espace_membres %}""{% endblock %} href="#">Membres</a>
+				</li>
+			</ul>
+        </div>
+    </div>
+</div>
+#}
+
+
+
+<div class="container theme-showcase" role="main">
+    <div id="header" class="jumbotron" color="#fff">
+        <h1>Site de paris de Supelec</h1>
+    </div>
+	
+	{% block message %}
+	
+	{% for message in app.session.flashbag.get('info') %}
+    <div id="wrapper" style="">
+
+		<div id= "ok" style="" class="alert alert-success" role="alert">
+
+		
+			<strong> {{ message }}</strong>
+			
+			
+			
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		
+		
+		</div>
+	</div>
+    {% endfor %}
+	
+	{% for message in app.session.flashbag.get('warning') %}
+    <div id="wrapper" style="">
+
+		<div id= "ok" style="" class="alert alert-warning" role="alert">
+
+		
+			<strong> {{ message }}</strong>
+			
+			
+			
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		
+		
+		</div>
+	</div>
+    {% endfor %}
+	
+	{% for message in app.session.flashbag.get('danger') %}
+    <div id="wrapper" style="">
+
+		<div id= "ok" style="" class="alert alert-danger" role="alert">
+
+		
+			<strong> {{ message }}</strong>
+			
+			
+			
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		
+		
+		</div>
+	</div>
+    {% endfor %}
+	
+	{% endblock %}
+
+    <div class="row">
+        <div id="menu" class="col-md-3">
+            {% block menu_admin %}
+            {% endblock %}
+
+{#            <h3>Les paris</h3>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{ path('pari_liste') }}">Liste des annonces</a></li>
+                <li><a href="{{ path('pari_creer') }}">Ajouter un pari</a></li>
+            </ul>       #}
+
+            <h4>Mes infos</h4>
+            {{ render(controller("LiliPariBundle:Pari:menu", {'nb': 3})) }}
+        </div>
+        <div id="content" class="col-md-9">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <p>
+            E.Lejosne et A.Liet. Réalisé grâce à Symfony2. SupelecBettingClub © {{ 'now'|date('Y') }}. Have fun !</p>
+    </footer>
+</div>
+
+{% block javascripts %}
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script>window.jQuery || document.write('<script src="//localhost/PariSupelec/jquery.js"><\/script>')</script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endblock %}
+
+</body>
+</html>

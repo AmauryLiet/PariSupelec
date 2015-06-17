@@ -1,0 +1,166 @@
+{# src/Lili/PariBundle/Resources/view/Pari/creer.html.twig #}
+
+
+{% extends "LiliCoreBundle::layout.html.twig" %}
+
+{% block body %}
+
+    {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+    <h2>{{ titre }}</h2> 
+    <hr>
+
+
+	<div class="well">
+		{# <form action="{{ path('lili_pari_creer') }}" method="POST" class="form-horizontal" role="form"> #}
+
+		
+		{% if form_errors(form) != null %}
+		
+
+		<div id="wrapper" style="">
+
+			<div id= "ok" style="" class="alert alert-danger" role="alert">
+
+			
+				<strong> {{ form_errors(form) }} </strong>
+			
+			
+			</div>
+		</div>
+
+		
+		{% endif %}
+		
+		<form action="{{ path('lili_pari_creer') }}" method="POST" {{ form_enctype(form) }}>
+			{# ... #}
+			
+			<div class="form-group">
+			{{ form_label(form.titre, "Titre du pari ") }}
+			{{ form_widget(form.titre, { 'attr': {'class': 'form-control' }}) }}
+			</div>
+			  
+			<div class="form-group">
+			{{ form_label(form.descriptif, "Descriptif du pari ") }}
+			{{ form_widget(form.descriptif, { 'attr': {'class': 'form-control' }}) }}
+			</div>
+			
+			<div id="propcote" class="row">
+			<div class="col-md-3">
+			{{ form_label(form.tableauChoix, "Propositions :") }}
+			
+			
+			{# stocke le prototype dans l'attribut data-prototype #}
+			<div id="email-fields-list" style='margin-bottom:15px;' data-prototype="{{ form_widget(form.tableauChoix.vars.prototype) | e }}">
+			{% for choix in form.tableauChoix %}
+			
+			{{ form_widget(choix, { 'attr': {'class': 'form-control' }}) }}
+
+			{% endfor %}
+			
+			{{ form_widget(form.tableauChoix) }}
+			</div>
+			</div>
+			
+			
+			<div class="col-md-3">
+			{{ form_label(form.cotes, "Cotes :") }}
+			
+			<div id="cote-fields-list" style='margin-bottom:15px;' data-prototype="{{ form_widget(form.cotes.vars.prototype) | e }}">
+			{% for cote in form.cotes %}
+			
+			{{ form_widget(cote, { 'attr': {'class': 'form-control' }}) }}
+
+			{% endfor %}
+			{{ form_widget(form.cotes) }}
+			</div>
+			</div>
+			
+			
+			<input type="submit" style='margin-bottom:15px;' id="add-another-email" onClick="validateForm(this)" value="Ajouter une proposition"></button>
+			</div>
+			
+			
+			<div class="form-group">
+			{{ form_label(form.dateDebut, "Date de début du pari ") }}
+			{{ form_widget(form.dateDebut, { 'attr': {'class': 'datepicker'}}) }}
+			</div>
+			
+			<div class="form-group">
+			{{ form_label(form.dateFin, "Date de fin du pari ") }}
+			{{ form_widget(form.dateFin, { 'attr': {'class': 'datepicker'}}) }}
+			</div>
+			
+
+			<button type="submit" class="btn btn-primary">{{ texte_bouton }} <span class="glyphicon glyphicon-ok"></span></button>
+			
+			{{ form_end(form) }}
+			
+			{# ... #}
+		</form>
+
+		
+<script type="text/javascript">
+    // garde une trace du nombre de champs email qui ont été affichés
+    var emailCount = '{{ form.tableauChoix | length }}';
+
+    jQuery(document).ready(function() {
+        jQuery('#add-another-email').click(function() {
+            var emailList = jQuery('#email-fields-list');
+			
+
+            // parcourt le template prototype
+            var newWidget1 = emailList.attr('data-prototype');
+			
+            // remplace les "__name__" utilisés dans l'id et le nom du prototype
+            // par un nombre unique pour chaque email
+            // le nom de l'attribut final ressemblera à name="contact[tableauChoix][2]"
+            newWidget1 = newWidget1.replace(/__name__/g, emailCount);
+
+
+            // créer une nouvelle liste d'éléments et l'ajoute à notre liste
+            var newLi1 = jQuery('<div></div>').html(newWidget1);
+			
+            newLi1.appendTo(jQuery('#email-fields-list'));
+			
+
+			var coteList = jQuery('#cote-fields-list');
+			var newWidget2 = jQuery('#cote-fields-list').attr('data-prototype');
+			newWidget2 = jQuery('#cote-fields-list').attr('data-prototype').replace(/__name__/g, emailCount);
+			var newLi2 = jQuery('<div><p>Hello</p></div>').html(newWidget2);
+			newLi2.appendTo(jQuery('#cote-fields-list'));
+			
+			emailCount++;
+			
+            return false;
+        });
+    })
+</script>
+
+<SCRIPT language="javascript">
+   var nbclic=0 // Initialisation à 0 du nombre de clic
+   function CompteClic(formulaire) { // Fonction appelée par le bouton
+      nbclic++; // nbclic+1
+      if (nbclic>10) { // Plus de 1 clic
+         return("this.disabled=true");
+      }
+   }
+</SCRIPT>
+
+<script type="text/javascript">
+	var nbclic=1
+    function validateForm(buttonObj) {  
+        nbclic++; // nbclic+1
+		if (nbclic>10) { // Plus de 10 clic
+			buttonObj.disabled = true;
+			alert('Pas plus de 10 propositions');
+			buttonObj.value = 'Limite atteinte...';  
+		}  
+
+        return true;  
+  
+    }  
+</script>
+	</div>
+
+
+{% endblock %}

@@ -50,7 +50,7 @@ class PariController extends Controller
             $em->persist($pari);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', 'Pari bien enregistré.');
+            $request->getSession()->getFlashBag()->add('info', 'Pari bien créé.');
 
             return $this->redirect($this->generateUrl('lili_pari_creer'));
         }
@@ -70,33 +70,29 @@ class PariController extends Controller
             ->getManager()
             ->getRepository('LiliPariBundle:Pari')
         ;
-        $nouveau=true;
         $pari = $repository->find($id);
         if($pari===null) {
-            if($id!=0)
-                $request->getSession()->getFlashBag()->add('warning', 'Le pari d\'id '.$id.' n\'existe pas. Vous pouvez créer un nouveau pari à la place.');
-            $pari = new Pari();
-        }else{
-            $nouveau=false;
+            $request->getSession()->getFlashBag()->add('warning', 'Le pari d\'id ' . $id . ' n\'existe pas. Vous pouvez créer un nouveau pari à la place.');
+            return $this->redirect($this->generateUrl('lili_pari_creer'));
         }
-
 
         $form = $this->get('form.factory')->create(new PariType(), $pari);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ( $form->handleRequest($request)->isValid() ) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($pari);
+            $pariAModif = $repository->find($id)->copier($pari);
+            $em->persist($pariAModif);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', 'Pari bien enregistré.');
+            $request->getSession()->getFlashBag()->add('info', 'Pari bien modifié.');
 
-            return $this->redirect($this->generateUrl('lili_pari_creer'));
+            return $this->redirect($this->generateUrl('lili_pari_accueil'));
         }
 
         return $this->render('LiliPariBundle:Pari:creer.html.twig', array(
             'form' => $form->createView(),
-            'titre' => ($nouveau ? 'Créer un nouveau pari' : 'Modifier le pari \''.$pari->getTitre() ).'\'',
-            'texte_bouton' => ($nouveau ? 'Créer le pari' : 'Modifier le pari')
+            'titre' => 'Modifier le pari \''.$pari->getTitre().'\'',
+            'texte_bouton' => 'Modifier le pari'
         ));
     }
 

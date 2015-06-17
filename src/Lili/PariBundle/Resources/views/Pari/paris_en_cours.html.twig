@@ -1,0 +1,76 @@
+{# src/Lili/PariBundle/Resources/view/Pari/voir.html.twig #}
+
+
+{% extends "LiliCoreBundle::layout.html.twig" %}
+
+{% block body %}
+
+    {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+    <h2>Paris en cours<button type="button" style="float:right; margin-top:5px" class="btn btn-default" data-toggle="collapse" data-target=".demo"><i class="glyphicon glyphicon-chevron-down"></i> Tout déplier</button>
+	</h2> 
+    <hr>
+
+
+	{% for pari in listeParis %}
+	<div class="well">
+    <p style="font-size: 25px; margin-bottom:0px"><strong>{{pari.titre}}</strong>
+
+	<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo{{ loop.index }}"><i class="glyphicon glyphicon-chevron-down"></i></button>
+	<div id="demo{{ loop.index }}" class="collapse demo" >
+	
+		<div class="well">
+
+		
+		<p style="font-size: 20px;">{{ pari.descriptif }}</p>
+
+		<form action="{{ path('lili_core_accueil') }}" method="POST" class="form-horizontal" role="form">
+		
+		
+		
+		
+		
+		{% for i in 0..pari.tableauChoix|length-1 %}
+		<div class="radio">
+		  <label><input type="radio" name="choix{{pari.titre}}" {% if i == 0 %} checked {%endif%}>{{ pari.tableauChoix[i] }} ({{pari.cotes[i]}})</label>
+		</div>
+		{% endfor %}
+		
+		<div class="form-group">
+
+		</div>
+		
+		<input type="submit" id="_submit" class="btn btn-success" name="_submit" value="Misez !" />
+		
+		</form>
+		
+		</div>
+    
+
+		{# {{ form_end() }} #}
+
+    <p>
+		<a href="{# {{ path('lili_pari_modifier', {'id': pari.id}) }} #}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            Modifier le pari
+        </a>
+		<a href="{# {{ path('lili_pari_supprimer', {'id': id}) }} #}" class="btn btn-warning">
+            <i class="glyphicon glyphicon-ban-circle"></i>
+            Clore le pari
+        </a>
+        <a href="{# {{ path('lili_pari_modifier', {'id': pari.id}) }} #}" class="btn btn-info">
+            <i class="glyphicon glyphicon-edit"></i>
+            Annoncer le résultat
+        </a>
+        <a href="{# {{ path('lili_pari_supprimer', {'id': id}) }} #}" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Supprimer le pari
+        </a>
+    </p>
+	</p>
+	</div>
+	
+	</div>
+	{% endfor %}
+
+
+{% endblock %}

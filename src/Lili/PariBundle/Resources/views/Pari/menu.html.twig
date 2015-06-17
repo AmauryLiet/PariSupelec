@@ -1,0 +1,24 @@
+{# src/Lili/PariBundle/Resources/views/Pari/menu.html.twig #}
+
+
+<ul class="nav nav-pills nav-stacked">
+    <li>
+        <p>&nbsp;Solde : {{ solde }}</p>
+    </li>
+	<li>
+	        <p>&nbsp;Paris en cours : {{ pariEnCours }}</p>
+	</li>
+	<li>
+	        <p>&nbsp;Paris terminés : {{ pariTermine }}</p>
+	</li>
+ {#   {% for pari in listeParis %}
+        <li>
+		
+		
+		
+            <a href="{{ path('pari_voir', {'id': pari.id}) }}">
+                {{ pari.title }}
+            </a>
+        </li>
+    {% endfor %}    #}
+</ul>

@@ -1,0 +1,48 @@
+{# src/Lili/CoreBundle/Resources/view/accueil_visiteur.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Paris en ligne Supelec !{% endblock %}</title>
+
+
+
+    {% block stylesheets %}
+        {# On charge le CSS de bootstrap depuis le site directement #}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    {% endblock %}
+
+    <link href="/PariSupelec/connexion.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<h1>
+    {% block titre %}
+        Connexion - Inscription
+    {% endblock %}
+</h1>
+
+{% block body %}
+    <div id="boutons">
+        <a href={{ path('fos_user_security_login') }}>
+            <button type="button" class="btn btn-lg btn-success">
+                <i class="glyphicon glyphicon-chevron-right"></i>
+                Connexion
+            </button>
+        </a>
+        <a href={{ path('fos_user_registration_register') }}>
+            <button type="button" class="btn btn-lg btn-success">
+                <i class="glyphicon glyphicon-chevron-right"></i>
+                Inscription
+            </button>
+        </a>
+    </div>
+{% endblock %}
+
+</body>
+</html>
